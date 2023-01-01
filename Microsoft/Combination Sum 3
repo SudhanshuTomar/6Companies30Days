@@ -1,0 +1,30 @@
+class Solution {
+public:
+    void rec(int x,int k,int n,vector<int> tmp,vector<vector<int>>& ans,vector<int>& vis){
+        if(tmp.size()==k){
+            int sum =0;
+            for(int i=0;i<tmp.size();i++){
+                sum+=tmp[i];
+            }
+            if(sum==n){
+                ans.push_back(tmp);
+            } 
+            return;
+        }
+        for(int i=x;i<=9;i++){
+            if(vis[i]==1) continue;
+            tmp.push_back(i);
+            vis[i]=1;
+            rec(i+1,k,n,tmp,ans,vis);
+            tmp.pop_back();
+            vis[i]=0;
+        }
+    }
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> ans;
+        vector<int> tmp;
+        vector<int> vis(10,0);
+        rec(1,k,n,tmp,ans,vis);
+        return ans;
+    }
+};
