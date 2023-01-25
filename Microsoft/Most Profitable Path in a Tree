@@ -1,0 +1,50 @@
+class Solution {
+public:
+    void dfs1(int node,int parent,int distance,vector<int>& par,vector<int>& dist,vector<vector<int>>& adj){
+        par[node] = parent;
+        dist[node] = distance;
+        for(auto it:adj[node]){
+            if(it!=parent){
+                dfs1(it,node,distance+1,par,dist,adj);
+            }
+        }
+    }
+    
+    int dfs2(int node,vector<int>& par,vector<int>& amount,vector<vector<int>>& adj){
+        int ans = INT_MIN;
+        for(auto it:adj[node]){
+            if(it!=par[node]){
+                ans = max(ans,dfs2(it,par,amount,adj));
+            }
+        }
+        if(ans == INT_MIN){
+            return amount[node];
+        }
+        return amount[node]+ans;
+    }
+    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
+        int n = amount.size();
+        vector<vector<int>> adj(n);
+        for(auto it:edges){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+        vector<int> par(n),dist(n);
+        //call first dfs to get parent and dist of each node
+        dfs1(0,0,0,par,dist,adj);
+        //now we modify amount vector acc to given rules
+        int curr_node=bob,bob_dist=0;
+        while(curr_node!=0){
+            if(dist[curr_node]>bob_dist){
+                amount[curr_node]=0;
+            }
+            else if(dist[curr_node]==bob_dist){
+                amount[curr_node]=amount[curr_node]/2;
+            }
+            bob_dist++;
+            curr_node = par[curr_node];
+        }
+        //now we call dfs for alice total profit
+        return dfs2(0,par,amount,adj);
+    }
+};
