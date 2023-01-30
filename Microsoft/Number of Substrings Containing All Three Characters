@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        int ans=0;
+        int n = s.size();
+        map<char,int> mp;
+        int l=0,r=0;
+        while(r<n && l<n){
+            if(mp['a']>0 && mp['b']>0 && mp['c']>0){
+                ans+=(n-r+1);
+                mp[s[l]]--;
+                l++;
+            }
+            else{
+                mp[s[r]]++;
+                r++;
+            }
+        }
+        while(l<n){
+            if(mp['a']>0 && mp['b']>0 && mp['c']>0){
+                ans+=(n-r+1);
+            }
+            mp[s[l]]--;
+            l++;
+        }
+        
+        
+        return ans;
+    }
+};
