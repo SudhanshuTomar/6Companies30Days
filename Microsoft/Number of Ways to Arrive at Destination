@@ -1,0 +1,48 @@
+class Solution {
+public:
+    
+    void dfs(int node,int target,vector<vector<pair<int,int>>>& adj,vector<int>& vis,int currdist,int& minidist){
+        if(node == target){
+            minidist = min(minidist,currdist);
+        }
+        vis[node]=1;
+        for(auto it:adj[node]){
+            if(!vis[it.first]){
+                dfs(it.first,target,adj,vis,currdist+it.second,minidist);
+            }
+        }
+        vis[node]=0;
+    }
+    int dfs2(int node,int target,vector<vector<pair<int,int>>>& adj,vector<int>& vis,int dist,int currdist){
+        if(node == target){
+            if(currdist == dist){
+                return 1;
+            }
+            return 0;
+        }
+        vis[node]=1;
+        int ans=0;
+        for(auto it:adj[node]){
+            if(!vis[it.first]){
+               ans+=dfs2(it.first,target,adj,vis,dist,currdist+it.second);
+            }
+        }
+        vis[node]=0;
+        return ans;
+    }
+    int countPaths(int n, vector<vector<int>>& roads) {
+        vector<vector<pair<int,int>>> adj(n);
+        for(auto it:roads){
+            int u = it[0];
+            int v = it[1];
+            int wt = it[2];
+            adj[u].push_back({v,wt});
+            adj[v].push_back({u,wt});
+        }
+        vector<int> vis(n,0);
+        int minidist =  INT_MAX;
+        dfs(0,n-1,adj,vis,0,minidist);
+        int cnt = dfs2(0,n-1,adj,vis,minidist,0);
+        return cnt%1000000007;
+    }
+};
