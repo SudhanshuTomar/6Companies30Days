@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int trailingZeroes(int n) {
+        int cnt5=0,cnt2=0;
+        for(int i=n;i>0;i--){
+            int tmpi = i;
+            while(tmpi%5==0){
+                tmpi=tmpi/5;
+                cnt5++;
+            }
+            while(tmpi%2==0){
+                tmpi=tmpi/2;
+                cnt2++;
+            }
+        }
+        return min(cnt5,cnt2);
+    }
+};
