@@ -1,0 +1,28 @@
+class Solution {
+public:
+    double dist(vector<int>& p1, vector<int>& p2){
+        double ans = (p2[0]-p1[0])*(p2[0]-p1[0]) + (p2[1]-p1[1])*(p2[1]-p1[1]);
+        return ans;
+    }
+    void findfun(double dist,map<double,double>& mp,double &side,double &diagonal){
+        mp[dist]++;
+        side = min(side,dist);
+        diagonal = max(diagonal,dist);
+    }
+    bool validSquare(vector<int>& p1, vector<int>& p2, vector<int>& p3, vector<int>& p4) {
+        map<double,double> mp;
+        double side=INT_MAX;
+        double diagonal=0;
+        findfun(dist(p1,p2),mp,side,diagonal);
+        findfun(dist(p1,p3),mp,side,diagonal);
+        findfun(dist(p1,p4),mp,side,diagonal);
+        findfun(dist(p2,p3),mp,side,diagonal);
+        findfun(dist(p2,p4),mp,side,diagonal);
+        findfun(dist(p3,p4),mp,side,diagonal);
+    
+        if(mp[side]==4 && mp[diagonal]==2){
+            return true;
+        }
+        return false;
+    }
+};
