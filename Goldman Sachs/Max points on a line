@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int maxPoints(vector<vector<int>>& points) {
+        int n = points.size();
+        if (n == 1) {
+            return 1;
+        }
+        int result = 2;
+        for (int i = 0; i < n; i++) {
+            unordered_map<double, int> cnt;
+            for(int j=0;j<n;j++){
+                if(i!=j){
+                    int x1 = points[i][0],y1 = points[i][1];
+                    int x2 = points[j][0],y2 = points[j][1];
+                    double slope = atan2(y2-y1,x2-x1);
+                    cnt[slope]++;
+                    result = max(cnt[slope]+1,result);
+                }
+                
+            }
+        }
+        return result;
+    }
+};
